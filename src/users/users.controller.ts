@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,30 +19,44 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    await this.usersService.create(createUserDto);
-
-    return 'User created!';
+    try {
+      await this.usersService.create(createUserDto);
+      return { result: 'User created!' };
+    } catch (err: any) {
+      throw new BadRequestException('Can not create new user!');
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
-    const users = await this.usersService.findAll();
-    return users.map(({ password, ...user }) => user);
+    try {
+      const users = await this.usersService.findAll();
+      return users.map(({ password, ...user }) => user);
+    } catch (err: any) {
+      throw new BadRequestException('Can not fetch users!');
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':userName')
   async findOne(@Param('userName') userName: string) {
-    const { password, ...user } = await this.usersService.findOne(userName);
-    return user;
+    try {
+      const { password, ...user } = await this.usersService.findOne(userName);
+      return user;
+    } catch (err: any) {
+      throw new BadRequestException('Can not fetch user!');
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':userName')
   async remove(@Param('userName') userName: string) {
-    await this.usersService.remove(userName);
-
-    return 'User removed!';
+    try {
+      await this.usersService.remove(userName);
+      return { result: 'User removed!' };
+    } catch (err: any) {
+      throw new BadRequestException('Can not remove user!');
+    }
   }
 }

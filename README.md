@@ -1,73 +1,49 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Testec Interview Homework Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Application Architecture
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Purpose
+The purpose of this Back End project is to create a simplest user CRUD at backend side, which will be comsumed at the Front End
 
-## Description
+The backend including the following parts:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. Database: in this project, I will use the Postgres
+2. Programing language used to implement the Backend is NodeJS with the Nest framework with an awesome built-in support for the IoC, ORM, Midleware, ...
+3. Project structure
+* `scripts`: some sql script to initialize the data
+* `src/auth`: the authentication implementation, you need to `/auth/login` with a username and password to have an access token
+* `src/users`: provide needed API for for the client
 
-## Installation
+## Pre-start
+Please create a new `.env` including the following parameters
+```sh
+DB_URL="<Postgres DB URL>"
+DB_PORT=The DB port (integer value)
+USER_NAME="User name to login in to DB"
+PASSWORD="password"
+DATABASE="working on which database"
 
-```bash
-$ npm install
+DEFAULT_PASSWORD="Default pass when creating a new user"
+
+PORT=80 # Backend server running port, should be 80
+
 ```
 
-## Running the app
+## Run it
+After doing needed configuration, you can start it by
 
-```bash
-# development
-$ npm run start
+1. Checkout this project to your machine
+2. Run `npm install` from the Root folder to install needed npm packages
+3. Run `npm build` to build this project then deploy it where you want. The final build resource can be found in folder `dist`, the entry point is `main.js`
+4. Run `npm run start` to start the application if you want to run this application from the source
 
-# watch mode
-$ npm run start:dev
+## DEMO
 
-# production mode
-$ npm run start:prod
-```
 
-## Test
+## Can do more if have enough time
+1. Unit Test and Code coverage
+2. Integration Test
+3. Have better error handling
+4. Integrate CI process with CircleCI
+5. Build the docker image and have a better flow to deploy on AWS 
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

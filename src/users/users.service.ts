@@ -1,40 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { toHash } from 'src/utils/helpers';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User, UserRoles } from './entities/user.entity';
-
-let users: User[] = [
-  {
-    firstName: 'Paul',
-    lastName: 'Tran',
-    userName: 'admin',
-    phone: '123456789',
-    email: 'paul.tran.0920@gmail.com',
-    userRole: UserRoles.Admin,
-    password: '$2b$10$h1PkmrcSA8FdeLrnuVo4seR7q6n/ONI8mks8Hwx1g6fB0LUjaQKNC',
-  },
-  {
-    firstName: 'Student',
-    lastName: '1',
-    userName: 'student1',
-    phone: '123456789',
-    email: 'student.1.0920@gmail.com',
-    userRole: UserRoles.Student,
-    password: '$2b$10$h1PkmrcSA8FdeLrnuVo4seR7q6n/ONI8mks8Hwx1g6fB0LUjaQKNC',
-  },
-  {
-    firstName: 'Mentor',
-    lastName: '1',
-    userName: 'mentor1',
-    phone: '123456789',
-    email: 'mentor.2.0920@gmail.com',
-    userRole: UserRoles.Mentor,
-    password: '$2b$10$h1PkmrcSA8FdeLrnuVo4seR7q6n/ONI8mks8Hwx1g6fB0LUjaQKNC',
-  },
-];
+import { User } from './entities/user.entity';
+import { UserRepository } from './users.repository';
+import { DataSource } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersService {
+  private usersRepository!: UserRepository;
+
+  constructor(
+    @InjectDataSource()
+    private dataSource: DataSource,
+  ) {
+    // Work around solution as the repository injection does not work for now. Why?
+    this.usersRepository = this.dataSource.getRepository(User);
+  }
+
   async create(createUserDto: CreateUserDto) {
     const user: User = {
       firstName: createUserDto.firstName,
@@ -43,21 +26,23 @@ export class UsersService {
       phone: createUserDto.phone,
       email: createUserDto.email,
       userRole: createUserDto.userRole,
-      password: await toHash(createUserDto.password || '123456789'),
+      password: await toHash(
+        createUserDto.password || process.env.DEFAULT_PASSWORD,
+      ),
     };
 
-    return users.push(user);
+    return await this.usersRepository.insert(user);
   }
 
   async findAll(): Promise<User[]> {
-    return users;
+    return await this.usersRepository.find();
   }
 
   async findOne(userName: string): Promise<User | undefined> {
-    return users.find((user) => user.userName === userName);
+    return await this.usersRepository.findOneBy({ userName });
   }
 
   async remove(userName: string) {
-    users = users.filter((user) => user.userName !== userName);
+    await this.usersRepository.delete(userName);
   }
 }
